@@ -1,7 +1,7 @@
 import axios from "axios";
 import "../extensions/string.extension";
 
-const baseURL = `${process.env.NEXT_PUBLIC_API_URL_UMS}/${process.env.NEXT_PUBLIC_API_VERSION_UMS}`;
+const baseURL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 const ApiiPath = axios.create({
   baseURL,

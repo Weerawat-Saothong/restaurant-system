@@ -24,8 +24,8 @@ const ThemeProvider: NextPage<Props> = ({ children }) => {
       theme={{
         algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
         token: {
-          colorPrimary: "#F6AB57",
-          colorLink: "#03B8ED",
+          colorPrimary: "#FED06E",
+          colorLink: "#FFCC2A",
           // colorPrimaryBg: isDarkMode ? "#162312" : "#F6FFED",
           // borderRadius: 0,
         },

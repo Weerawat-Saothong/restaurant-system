@@ -1,28 +1,47 @@
 "use client";
 
 import { Layout } from "antd";
-import { Header, Content, Footer } from "antd/es/layout/layout";
-import Sider from "antd/es/layout/Sider";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LayoutHeader from "./layoutHeader";
-import LayoutSider from "./layoutSider";
 import LayoutContent from "./layoutContent";
+import LayoutFooter from "./layoutFooter";
 import { usePathname } from "next/navigation";
+import { isMobileOrTablet } from "@/utils/isMobile";
 
 type Props = {
   children: React.ReactNode;
 };
 
-export default function LayoutMain({ children }: Props) {
+export default function LayoutMain({ children }: Readonly<Props>) {
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
   const path = usePathname();
-  console.log("🚀 ~ parh:", path);
+  console.log("🚀 ~ path:", path);
+
+  useEffect(() => {
+    setIsMobileDevice(isMobileOrTablet());
+    const handleResize = () => {
+      setIsMobileDevice(isMobileOrTablet());
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  if (!isMobileDevice) {
+    return null;
+  }
+
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout
+      style={{
+        margin: 0,
+        maxWidth: "1024px",
+      }}
+    >
       <LayoutHeader />
-      <Layout>
-        {path == "/login" ? null : <LayoutSider />}
-        <LayoutContent> {children}</LayoutContent>
-      </Layout>
+      <LayoutContent>{children}</LayoutContent>
+      <LayoutFooter />
     </Layout>
   );
 }

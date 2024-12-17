@@ -13,6 +13,7 @@ export enum BreadcrumbTitle {
   SubCategory = "Sub category",
   DashBoard = "Dashboard",
   Issue = "Menu",
+  Order = "Order",
   UserManagement = "User management",
   SlaManagement = "Sla management",
   Detail = "Detail",

@@ -1,10 +1,16 @@
 export enum ApiPath {
   //Login
-  Login = "",
+  Login = "/auth/login",
   Verify = "",
   Logout = "",
   roleId = "",
+  UpdateMenu="/menu/{id}",
+  DeleteMenu="/menu/{id}",
+  CreateMenu = "/menu",
+
 
   // yum api
-  GetMenu = "",
+  GetMenu = "/menu",
+  GetTableFood = "/tableFood",
+  GetTableFoodByID = "/ScanTable/{id}",
 }

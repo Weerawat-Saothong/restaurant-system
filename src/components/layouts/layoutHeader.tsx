@@ -1,29 +1,49 @@
 "use client";
 
-import { UserOutlined } from "@ant-design/icons";
-import { Col, Layout, Row, theme } from "antd";
-import React from "react";
+import menuViewModel from "@/app/menu/menu.veiwModel";
+import { KEY_STORAGE } from "@/storage";
+import { _getStorage } from "@/utils/local-storage";
+import { Layout, Row, Col, Typography, theme } from "antd";
+import { Header } from "antd/es/layout/layout";
+import { observer } from "mobx-react";
+import React, { useEffect, useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
 
 type Props = {};
 
-export default function LayoutHeader({}: Props) {
+const LayoutHeader = ({}: Props) => {
   const { token } = theme.useToken();
+  menuViewModel.calculateTotalPrice();
 
   return (
-    <Layout.Header style={{ backgroundColor: "#F6AB57" }}>
-      <Row
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingRight: "20px", // Adjust the right padding as needed
-        }}
-      >
-        <Col>{/* Your logo or any other header content */}</Col>
-        <Col>
-          <UserOutlined />
+    <Header
+      style={{
+        backgroundColor: token.colorPrimary,
+        position: "fixed",
+        top: 0,
+        width: "100%",
+        padding: "5px 10px",
+        zIndex: 999,
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <Row align="middle" gutter={8} style={{ width: "100%" }}>
+        <Col style={{ display: "flex", alignItems: "center" }}>
+          <FaUserCircle size={30} />
+          <Typography.Title level={5} style={{ margin: "0 0 0 10px" }}>
+            โต๊ะ No.1
+          </Typography.Title>
+        </Col>
+        <Col style={{ marginLeft: "auto" }}>
+          <Typography.Text style={{ color: "#fff" }}>
+            $ {menuViewModel.totalPrice}
+          </Typography.Text>
         </Col>
       </Row>
-    </Layout.Header>
+    </Header>
   );
-}
+};
+
+export default observer(LayoutHeader);

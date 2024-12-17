@@ -10,9 +10,9 @@ export const requestConfig = (): AxiosRequestConfig => {
   return {
     headers: {
       ...(token && { Authorization: `Bearer ${token}` }),
-      "X-Api-Key": process.env.NEXT_PUBLIC_API_KEY as string,
-      "X-Client-ID": process.env.NEXT_PUBLIC_CLIENT_ID as string,
-      "ngrok-skip-browser-warning": 69420,
+      // "X-Api-Key": process.env.NEXT_PUBLIC_API_KEY as string,
+      // "X-Client-ID": process.env.NEXT_PUBLIC_CLIENT_ID as string,
+      // "ngrok-skip-browser-warning": 69420,
     },
   };
 };

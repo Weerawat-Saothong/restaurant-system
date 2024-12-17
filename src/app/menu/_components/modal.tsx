@@ -1,32 +1,68 @@
-import { Modal, Flex, Form, Input, Button, Typography } from "antd";
+import {
+  Modal,
+  Flex,
+  Form,
+  Input,
+  Button,
+  Typography,
+  notification,
+  Checkbox,
+  CheckboxProps,
+} from "antd";
 import form from "antd/es/form";
 import { type } from "os";
 import React, { useEffect } from "react";
 import { IForm } from "../interface";
 import menuViewModel from "../menu.veiwModel";
 import { observer } from "mobx-react";
+import { Path } from "@/app/types/path.enum";
+import { useRouter } from "next/navigation";
+import { values } from "mobx";
 
 const ModalMenu = () => {
   const { Text } = Typography;
   const [form] = Form.useForm<IForm>();
+  const route = useRouter();
   useEffect(() => {
     if (menuViewModel.isOpenModalCreate) {
       form.setFieldsValue({
         name: "",
+        haveOrder: true,
         price: 0,
       });
     } else {
       form.setFieldsValue({
-        name: "ยำมาม่า",
-        price: 50,
+        name: menuViewModel.itemEdit.name,
+        price: menuViewModel.itemEdit.price,
+        haveOrder: menuViewModel.itemEdit.haveOrder,
       });
     }
   }, [menuViewModel.isOpenModalCreate, menuViewModel.isOpenModalEdit]);
 
-  const onFinishForm = () => {};
+  const onFinishForm = (value: IForm) => {
+    let id = menuViewModel.itemEdit.id;
+    if (menuViewModel.isOpenModalCreate) {
+      const values = {
+        ...value,
+        haveOrder: value.haveOrder,
+      };
+      menuViewModel.onFinishCreate(values);
+    } else {
+      const values = {
+        ...value,
+        haveOrder: value.haveOrder,
+      };
+      menuViewModel.onFinishEdit(id, values);
+    }
+  };
   const onCancel = () => {
     menuViewModel.isOpenModalCreate = false;
     menuViewModel.isOpenModalEdit = false;
+  };
+  const onChange: CheckboxProps["onChange"] = (e) => {
+    const value = e.target.checked;
+
+    form.setFieldsValue({ haveOrder: value });
   };
   return (
     <Modal
@@ -68,6 +104,9 @@ const ModalMenu = () => {
             <Input type="number" placeholder="input value" />
           </Form.Item>
 
+          <Form.Item name="haveOrder" valuePropName="checked">
+            <Checkbox onChange={onChange}>มีเมนู</Checkbox>
+          </Form.Item>
           <Flex gap={12} justify="flex-end">
             <Button key="cancel" onClick={() => onCancel()}>
               Cancel

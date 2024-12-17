@@ -2,20 +2,18 @@ import { AxiosRequestConfig } from "axios";
 import axiosAdapter from "../adapters/axios.adapter";
 
 import { Response } from "./types/response.type";
-import { IForm } from "@/app/menu/interface";
+import { IForm, ItemRes } from "@/app/menu/interface";
 import { ApiPath } from "./types/api-path.type";
 import { MenuListReq, MenuListRes } from "./types/menu.type";
 import { requestConfig } from "./types/request.config";
 
 export interface MenuRepository {
-  getAll(req: MenuListReq): Promise<Response<any>>;
-  //   create(req: IForm): Promise<Response<any>>;
-  //   getId(id: string): Promise<Response<any>>;
-  //   update(
-  //     id: string,
-  //     req: IForm
-  //   ): Promise<Response<any>>;
-  //   delete(id: string): Promise<Response<any>>;
+  getAll(): Promise<Response<any>>;
+  // getAll(req: MenuListReq): Promise<Response<any>>;
+  create(req: IForm): Promise<Response<any>>;
+  getOne(id: string): Promise<Response<ItemRes>>;
+  update(id: string, req: IForm): Promise<Response<any>>;
+  delete(id: string): Promise<Response<any>>;
 }
 
 export class MenuRepositoryImpl implements MenuRepository {
@@ -23,65 +21,66 @@ export class MenuRepositoryImpl implements MenuRepository {
     return requestConfig();
   }
 
-  async getAll(req: MenuListReq) {
+  async getAll() {
     const path = ApiPath.GetMenu;
 
-    const urlSearchParams = new URLSearchParams({
-      page: req?.page ?? "1",
-      limit: req?.limit ?? "10",
-    }).toString();
+    // const urlSearchParams = new URLSearchParams({
+    //   page: req?.page ?? "1",
+    //   limit: req?.limit ?? "10",
+    // }).toString();
 
     const res = await axiosAdapter.get<Response<MenuListRes>>(
-      `${path}?${urlSearchParams}`,
-      this.headers
+      `${path}`,
+      // `${path}?${urlSearchParams}`,
+      //  this.headers
     );
 
     return res.data;
   }
 
-  //   async create(req: CategoryCreateReq) {
-  //     const path = ApiPath.CreateCategory;
+  async create(req: IForm) {
+    const path = ApiPath.CreateMenu;
 
-  //     const res = await axiosAdapter.post<Response<CategoryCreateRes>>(
-  //       `${path}`,
-  //       req,
-  //       this.headers
-  //     );
+    const res = await axiosAdapter.post<Response<MenuListRes>>(
+      `${path}`,
+      req,
+       this.headers
+    );
 
-  //     return res.data;
-  //   }
+    return res.data;
+  }
 
-  //   async getId(id: string) {
-  //     const path = ApiPath.GetIdCategory.replace("{id}", id);
+  async getOne(id: string) {
+    const path = ApiPath.UpdateMenu.replace("{id}", id);
 
-  //     const res = await axiosAdapter.get<Response<CategoryIdRes>>(
-  //       `${path}`,
-  //       this.headers
-  //     );
+    const res = await axiosAdapter.get<Response<any>>(
+      `${path}`,
+     this.headers
+    );
 
-  //     return res.data;
-  //   }
+    return res.data;
+  }
 
-  //   async update(id: string, req: CategoryUpdateReq) {
-  //     const path = ApiPath.UpdateCategory.replace("{id}", id);
+  async update(id: string, req: IForm) {
+    const path = ApiPath.UpdateMenu.replace("{id}", id);
 
-  //     const res = await axiosAdapter.put<Response<CategoryUpdateRes>>(
-  //       `${path}`,
-  //       req,
-  //       this.headers
-  //     );
+    const res = await axiosAdapter.put<Response<MenuListRes>>(
+      `${path}`,
+      req,
+     this.headers
+    );
 
-  //     return res.data;
-  //   }
+    return res.data;
+  }
 
-  //   async delete(id: string) {
-  //     const path = ApiPath.DeleteCategory.replace("{id}", id);
+  async delete(id: string) {
+    const path = ApiPath.DeleteMenu.replace("{id}", id);
 
-  //     const res = await axiosAdapter.delete<Response<CategoryDeleteRes>>(
-  //       `${path}`,
-  //       this.headers
-  //     );
+    const res = await axiosAdapter.delete<Response<MenuListRes>>(
+      `${path}`,
+      this.headers
+    );
 
-  //     return res.data;
-  //   }
+    return res.data;
+  }
 }
